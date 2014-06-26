@@ -58,6 +58,8 @@ retrieveTable();
 			  ht.addFamily( new HColumnDescriptor("Date"));
 			  
 			  ht.addFamily( new HColumnDescriptor("AxisData"));
+			  ht.addFamily( new HColumnDescriptor("Humidity"));
+			  ht.addFamily( new HColumnDescriptor("Temperature"));
 			  
 			  //ht.addFamily( new HColumnDescriptor("y"));
 			  
@@ -91,7 +93,7 @@ retrieveTable();
          config.set("hbase.master", "134.193.136.127:60010");
          
          
-         String latitude="",longitude="",Date="",x="",y="",z="";
+         String latitude="",longitude="",Date="",x="",y="",z="",Humid="",Temp="";
          
 
 		  HTable table = new HTable(config, "vishnu_Lab2");
@@ -101,27 +103,32 @@ retrieveTable();
 		  int count=1;
          
         BufferedReader br = null;
+        BufferedReader hr=null;
          
  		try {
   
- 			String sCurrentLine;
+ 			String sCurrentLine,hCurrentLine;
   
  			br = new BufferedReader(new FileReader("C:\\Users\\vgz8b\\Documents\\sensor.txt"));
+ 			hr=new BufferedReader(new FileReader("C:\\Users\\vgz8b\\Documents\\humtemp.txt"));
   
- 			while ((sCurrentLine = br.readLine()) != null) {
+ 			while ((sCurrentLine = br.readLine()) != null && (hCurrentLine = hr.readLine())!=null ) {
  				
- 				if(sCurrentLine.equals(""))
+ 				if(sCurrentLine.equals("") && hCurrentLine.equals(""))
  				{
  					continue;
  				}
  				
  				String[] array = sCurrentLine.split("\t");
+ 				String[] harray=hCurrentLine.split("\t");
  				latitude = array[0];
  				longitude=array[1];
  				Date=array[2];
  				x=array[3];
  				y=array[4];
  				z=array[5];
+ 				Humid=harray[0];
+ 				Temp=harray[1];
  				
  				  p.add(Bytes.toBytes("Location"), Bytes.toBytes("Latitude"),Bytes.toBytes(latitude));
  				  
@@ -134,6 +141,8 @@ retrieveTable();
  				p.add(Bytes.toBytes("AxisData"), Bytes.toBytes("Y"),Bytes.toBytes(y));
  				
  				p.add(Bytes.toBytes("AxisData"), Bytes.toBytes("Z"),Bytes.toBytes(z));
+ 				p.add(Bytes.toBytes("Humidity"), Bytes.toBytes("humidity"),Bytes.toBytes(Humid));
+ 				p.add(Bytes.toBytes("Temperature"), Bytes.toBytes("temperature"),Bytes.toBytes(Temp));
 
  			      table.put(p);
  			      //table.flushCommits();
@@ -148,7 +157,11 @@ retrieveTable();
  			e.printStackTrace();
  		} finally {
  			try {
- 				if (br != null)br.close();
+ 				if (br != null && hr!=null)
+ 					{
+ 					br.close();
+ 					hr.close();
+ 					}
  			} catch (IOException ex) {
  				ex.printStackTrace();
  			}
@@ -177,6 +190,8 @@ retrieveTable();
 g.addFamily(Bytes.toBytes("Location"));
 g.addFamily(Bytes.toBytes("Date"));
 g.addFamily(Bytes.toBytes("AxisData"));
+g.addFamily(Bytes.toBytes("Humidity"));
+g.addFamily(Bytes.toBytes("Temperature"));
 		  Result r = table.get(g);
 
 		  byte[] value = r.getValue(Bytes.toBytes("Location"),Bytes.toBytes("Latitude"));
@@ -190,7 +205,8 @@ g.addFamily(Bytes.toBytes("AxisData"));
 		  byte[] value4 = r.getValue(Bytes.toBytes("AxisData"),Bytes.toBytes("Y"));
 		  
 		  byte[] value5 = r.getValue(Bytes.toBytes("AxisData"),Bytes.toBytes("Z"));
-		  
+		  byte[] value6 = r.getValue(Bytes.toBytes("Humidity"),Bytes.toBytes("humidity"));
+		  byte[] value7 = r.getValue(Bytes.toBytes("Temperature"),Bytes.toBytes("temperature"));
 		  
 		  String valueStr = Bytes.toString(value);
 
@@ -203,12 +219,18 @@ g.addFamily(Bytes.toBytes("AxisData"));
 		  String valueStr4 = Bytes.toString(value4);
 		  
 		  String valueStr5 = Bytes.toString(value5);
+		  
+		  String valueStr6 = Bytes.toString(value6);
+		  
+		  String valueStr7 = Bytes.toString(value7);
 
 		  System.out.println("GET: " +"latitude: "+ valueStr+"longitude: "+valueStr1);
 		  System.out.println("GET: " +"Date: "+ valueStr2);
 		  System.out.println("GET: " +"x: "+ valueStr3);
 		  System.out.println("GET: " +"y: "+ valueStr4);
 		  System.out.println("GET: " +"z: "+ valueStr5);
+		  System.out.println("GET: " +"Humidity: "+ valueStr6);
+		  System.out.println("GET: " +"Temperature: "+ valueStr7);
 		  
 		  
 
