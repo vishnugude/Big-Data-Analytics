@@ -1,0 +1,14 @@
+<resources>
+
+    <string name="app_name">VishnuLab</string>
+
+    <string name="createBtn">Create</string>
+
+    <string name="insertBtn">Insert</string>
+
+    <string name="retrieveBtn">Retrieve</string>
+
+    <string name="deleteBtn">Delete</string>
+    <string name="action_settings">Settings</string>
+
+</resources>
