@@ -1,0 +1,21 @@
+# view AndroidManifest.xml #generated:17
+-keep class me.codeand.ahahpah_en.AhahpahApplication { <init>(...); }
+
+# view AndroidManifest.xml #generated:29
+-keep class me.codeand.ahahpah_en.DataService { <init>(...); }
+
+# view AndroidManifest.xml #generated:21
+-keep class me.codeand.ahahpah_en.MainGame { <init>(...); }
+
+# view AndroidManifest.xml #generated:30
+-keep class me.codeand.ahahpah_en.Prefs { <init>(...); }
+
+# view res/xml/settings.xml #generated:6
+-keep class me.codeand.ahahpah_en.SliderPreference { <init>(...); }
+
+# view res/xml/settings.xml #generated:15
+-keep class me.codeand.ahahpah_en.YesNoDialogPreference { <init>(...); }
+
+# view res/layout/gamelayout.xml #generated:9
+-keep class org.anddev.andengine.opengl.view.RenderSurfaceView { <init>(...); }
+
